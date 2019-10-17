@@ -1,0 +1,41 @@
+Bootstrap: docker
+From: ubuntu:16.04
+
+
+%runscript
+exec /opt/slicer/Slicer-4.10.2-linux-amd64/Slicer "$@"
+
+%post
+	apt-get update -y && apt-get upgrade -y
+	apt install -y build-essential
+	apt-get install -y git cmake gcc binutils \
+ 	patch \
+	bzip2 ca-certificates \
+      	libglib2.0-0 libxext6 libsm6 libxrender1 \
+      	mercurial \
+      	libcanberra-gtk* \
+     	autoconf wget sed python3-dev python3-pip curl\
+
+	apt-get install -y  subversion git-core git-svn make gcc g++ libx11-dev libxt-dev libgl1-mesa-dev libglu1-mesa-dev libfontconfig-dev libxrender-dev libncurses5-dev libxkbcommon-x11-0
+	apt-get install -y libgstreamer-plugins-base0.10-dev
+	apt-get install -y libpulse-mainloop-glib0 libnss3 libglu1-mesa
+
+	mkdir -p /opt/slicer
+	cd /opt/slicer
+	#wget https://github.com/Slicer/Slicer/archive/v4.10.2.tar.gz
+	#tar -xvzf v4.10.2.tar.gz
+	#cd Slicer-4.10.2
+	#./Utilities/SetupForDevelopment
+
+	wget https://download.slicer.org/bitstream/1023242
+	tar -xvzf 1023242
+
+
+    #------------------------------------------------------------------------------
+    # Create local binding point for our system
+    #------------------------------------------------------------------------------
+    mkdir -p /storage/home
+    mkdir -p /storage/work
+    mkdir -p /gpfs/scratch
+    mkdir -p /gpfs/group
+    mkdir -p /var/spool/torque
